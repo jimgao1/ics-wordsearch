@@ -3,6 +3,18 @@ import java.util.Arrays;
 
 public class SolveBoard {
 	
+	public static class SolverResult{
+		public int locationX;
+		public int locationY;
+		public int direction;
+		
+		public SolverResult(int x, int y, int dir){
+			this.locationX = x;
+			this.locationY = y;
+			this.direction = dir;
+		}
+	}
+	
 	public static int[] dx = {1, -1, 0, 0, 1, -1, 1, -1};
 	public static int[] dy = {0, 0, 1, -1, 1, -1, -1, 1};
 	public static int X = 20, Y = 20;
@@ -11,15 +23,18 @@ public class SolveBoard {
 	public static boolean[][] found;
 	public static ArrayList<String> words;
 	
-	public static boolean findWord(char[][] wordGrid, ArrayList<String> wordList, String query){
+	public static SolverResult[] findWord(char[][] wordGrid, ArrayList<String> wordList){
 		board = wordGrid;
-		words = wordList;
-		Arrays.fill(found, false);
+		SolverResult[] results = new SolverResult[wordList.size()];
 		
-		return find(query);
+		for (int i = 0; i < wordList.size(); i++){
+			results[i] = find(wordList.get(i));
+		}
+		
+		return results;
 	}
 	
-	private static boolean find(String str){
+	private static SolverResult find(String str){
 		for (int i = 0; i < X; i++){
 			for (int j = 0; j < Y; j++){
 				for (int k = 0; k < 8; k++){
@@ -33,11 +48,11 @@ public class SolveBoard {
 						}
 					}
 					
-					if (flag) return true;
+					if (flag) return new SolverResult(i, j, k);
 				}
 			}
 		}
-		return false;
+		return null;
 	}
 
 }
