@@ -19,7 +19,7 @@ public class GenerateBoard {
 		return null;
 	}
 	
-	public static boolean generate(int curIndex){
+	private static boolean generate(int curIndex){
 		System.out.printf("curIndex = %d\n", curIndex);
 		
 		if (curIndex == words.size()) {
