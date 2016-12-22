@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class Main {
 	public static void main(String[] args){
+		//I made some changes
 		ArrayList<String> words = new ArrayList<>();
 		words.add("sample_word");
 		
