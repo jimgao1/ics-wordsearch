@@ -6,8 +6,8 @@ public class Main extends JFrame {
     //Frames
     GeneratePanel generatePanel;
 
-    public Main(){
-        this.setSize(600, 400);
+    public Main() {
+        this.setSize(600, 300);
         this.setTitle("Fuck");
         this.setLayout(new GridLayout(1, 2));
         this.setResizable(true);
@@ -23,7 +23,7 @@ public class Main extends JFrame {
         this.revalidate();
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         new Main();
     }
 }

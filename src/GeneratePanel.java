@@ -9,7 +9,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class GeneratePanel extends JPanel implements ActionListener{
+public class GeneratePanel extends JPanel implements ActionListener {
 
     public GridBagConstraints constraints;
 
@@ -78,27 +78,27 @@ public class GeneratePanel extends JPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("choose_wordlist")){
+        if (e.getActionCommand().equals("choose_wordlist")) {
             //Get the word list path and update label
             this.fileChooser.showOpenDialog(this);
             this.wordListFile = fileChooser.getSelectedFile();
             this.lblWordListPath.setText(this.wordListFile.getAbsolutePath().toString());
-        } else if (e.getActionCommand().equals("choose_result")){
+        } else if (e.getActionCommand().equals("choose_result")) {
             this.fileChooser.showOpenDialog(this);
             this.resultFile = fileChooser.getSelectedFile();
             this.lblResultsPath.setText(this.resultFile.getAbsolutePath().toString());
-        } else if (e.getActionCommand().equals("generate")){
+        } else if (e.getActionCommand().equals("generate")) {
             //Read the words from the file
             ArrayList<String> words = new ArrayList<>();
             try {
                 Scanner reader = new Scanner(this.wordListFile);
-                while(reader.hasNext()){
+                while (reader.hasNext()) {
                     //TODO: Change to avoid getting screwed
                     words.add(reader.next().toUpperCase());
                 }
 
                 System.out.printf("%d word(s) are imported.\n", words.size());
-            } catch (IOException ex){
+            } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Failed reading from file: " + ex.getLocalizedMessage());
             }
 
@@ -123,7 +123,7 @@ public class GeneratePanel extends JPanel implements ActionListener{
                 writer.close();
 
                 JOptionPane.showMessageDialog(this, "The puzzle has been generated successfully.");
-            } catch (IOException ex){
+            } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "Cannot write to file: " + ex.getLocalizedMessage());
             }
         }

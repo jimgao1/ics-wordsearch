@@ -1,8 +1,10 @@
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class BoardViewWindow extends JFrame {
+public class BoardViewWindow extends JFrame implements ListSelectionListener {
 
     public JPanel pnlWordList;
     public JList lstWordList;
@@ -26,7 +28,9 @@ public class BoardViewWindow extends JFrame {
         pnlWordList.setBorder(BorderFactory.createTitledBorder("Word List"));
         wordListModel = new DefaultListModel<>();
         lstWordList = new JList(wordListModel);
+        lstWordList.addListSelectionListener(this);
         lstWordList.setFont(new Font("Consolas", Font.PLAIN, 14));
+        lstWordList.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
         pnlWordList.add(lstWordList);
 
         for (String curWord : words){
@@ -56,5 +60,10 @@ public class BoardViewWindow extends JFrame {
         this.setVisible(true);
         this.repaint();
         this.revalidate();
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        System.out.printf("Selected: " + e.getFirstIndex());
     }
 }
