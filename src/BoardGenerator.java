@@ -41,7 +41,7 @@ public class BoardGenerator {
 
         for (; ; ) {
             //Generate random shit
-            int direction = (int) (Math.random() * 4) + (Math.random() > 0.8 ? 0 : 4);
+            int direction = (int) (Math.random() * 4) + (Math.random() > 0.4 ? 0 : 4);
             int locX = (int) (Math.random() * X);
             int locY = (int) (Math.random() * Y);
 

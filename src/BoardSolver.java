@@ -34,14 +34,17 @@ public class BoardSolver {
     }
 
     private static SolverResult find(String str){
-        for (int i = 0; i < X; i++){
-            for (int j = 0; j < Y; j++){
+        System.out.printf("Finding String: %s\n", str);
+        for (int i = 0; i < board.length; i++){
+            for (int j = 0; j < board[0].length; j++){
                 for (int k = 0; k < 8; k++){
+                    System.out.printf("i = %d, j = %d, k = %d\n", i, j, k);
+
                     int nX = i + dx[k] * (str.length() - 1), nY = j + dy[k] * (str.length() - 1);
                     if (nX < 0 || nX >= X || nY < 0 || nY >= Y) continue;
                     boolean flag = true;
                     for (int l = 0; l < str.length(); l++){
-                        if (str.charAt(l) != board[i + l * dx[i]][j + l * dy[i]]){
+                        if (str.charAt(l) != board[i + l * dx[k]][j + l * dy[k]]){
                             flag = false;
                             break;
                         }
