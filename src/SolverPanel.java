@@ -83,8 +83,8 @@ public class SolverPanel extends JPanel implements ActionListener {
         pnlOutput.add(btnChangeOutputPath, BorderLayout.EAST);
         this.add(pnlOutput, constraints);
 
-        btnGenerate = new JButton("Generate Puzzle");
-        btnGenerate.setActionCommand("generate");
+        btnGenerate = new JButton("Solve Puzzle");
+        btnGenerate.setActionCommand("solve");
         btnGenerate.addActionListener(this);
         this.add(btnGenerate, constraints);
     }
@@ -103,7 +103,7 @@ public class SolverPanel extends JPanel implements ActionListener {
             this.fileChooser.showOpenDialog(this);
             this.outputFile = fileChooser.getSelectedFile();
             this.lblOutputPath.setText(this.outputFile.getAbsolutePath().toString());
-        } else if (e.getActionCommand().equals("generate")) {
+        } else if (e.getActionCommand().equals("solve")) {
 
             try {
                 //Read the board content

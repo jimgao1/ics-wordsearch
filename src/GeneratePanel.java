@@ -23,6 +23,12 @@ public class GeneratePanel extends JPanel implements ActionListener {
     public JLabel lblResultsPath;
     public JButton btnChangeResultPath;
 
+    public JPanel pnlOptions;
+    public JLabel lblRows;
+    public JLabel lblColumns;
+    public JTextField txtRows;
+    public JTextField txtColumns;
+
     public JButton btnGenerate;
 
     public JFileChooser fileChooser;
@@ -70,6 +76,21 @@ public class GeneratePanel extends JPanel implements ActionListener {
         pnlResults.add(btnChangeResultPath, BorderLayout.EAST);
         this.add(pnlResults, constraints);
 
+        pnlOptions = new JPanel();
+        pnlOptions.setBorder(BorderFactory.createTitledBorder("Dimensions"));
+        pnlOptions.setLayout(new FlowLayout());
+        lblRows = new JLabel("Rows: ");
+        lblColumns = new JLabel("Cols: ");
+        txtRows = new JTextField();
+        txtRows.setPreferredSize(new Dimension(40, 25));
+        txtColumns = new JTextField();
+        txtColumns.setPreferredSize(new Dimension(40, 25));
+        pnlOptions.add(lblRows);
+        pnlOptions.add(txtRows);
+        pnlOptions.add(lblColumns);
+        pnlOptions.add(txtColumns);
+        this.add(pnlOptions, constraints);
+
         btnGenerate = new JButton("Generate Puzzle");
         btnGenerate.setActionCommand("generate");
         btnGenerate.addActionListener(this);
@@ -103,7 +124,9 @@ public class GeneratePanel extends JPanel implements ActionListener {
             }
 
             //Generate the board
-            char[][] board = BoardGenerator.generate(words);
+            int rows = Integer.parseInt(txtRows.getText());
+            int cols = Integer.parseInt(txtColumns.getText());
+            char[][] board = BoardGenerator.generate(words, rows, cols);
 
             new BoardViewWindow(words, board);
 

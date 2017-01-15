@@ -1,19 +1,21 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class BoardGenerator {
 
     public static int[] dx = {1, -1, 0, 0, 1, -1, 1, -1};
     public static int[] dy = {0, 0, 1, -1, 1, -1, -1, 1};
 
-    public static int X = 20, Y = 20;
+    public static int boardWidth, boardHeight;
 
     public static ArrayList<String> words;
     public static char[][] board;
 
-    public static char[][] generate(ArrayList<String> wordList) {
+    public static char[][] generate(ArrayList<String> wordList, int R, int C) {
+        boardWidth = R;
+        boardHeight = C;
+
         words = new ArrayList<>();
-        board = new char[X][Y];
+        board = new char[boardWidth][boardHeight];
 
         if (wordList == null)
             throw new IllegalArgumentException("Argument is null");
@@ -29,8 +31,8 @@ public class BoardGenerator {
         System.out.printf("curIndex = %d\n", curIndex);
 
         if (curIndex == words.size()) {
-            for (int i = 0; i < X; i++) {
-                for (int j = 0; j < Y; j++) {
+            for (int i = 0; i < boardWidth; i++) {
+                for (int j = 0; j < boardHeight; j++) {
                     if (board[i][j] == '\0') {
                         board[i][j] = (char) ('A' + (int) (Math.random() * 26));
                     }
@@ -42,18 +44,18 @@ public class BoardGenerator {
         for (; ; ) {
             //Generate random shit
             int direction = (int) (Math.random() * 4) + (Math.random() > 0.4 ? 0 : 4);
-            int locX = (int) (Math.random() * X);
-            int locY = (int) (Math.random() * Y);
+            int locX = (int) (Math.random() * boardWidth);
+            int locY = (int) (Math.random() * boardHeight);
 
             //Check out of bounds
             String curWord = words.get(curIndex);
             int endX = locX + dx[direction] * curWord.length();
             int endY = locY + dy[direction] * curWord.length();
 
-            if (endX < 0 || endX >= X || endY < 0 || endY >= Y) continue;
+            if (endX < 0 || endX >= boardWidth || endY < 0 || endY >= boardHeight) continue;
 
             //Check for collisions
-            boolean[][] updated = new boolean[X][Y];
+            boolean[][] updated = new boolean[boardWidth][boardHeight];
             boolean valid = true;
             for (int i = 0; i < curWord.length(); i++) {
                 int curX = locX + dx[direction] * i;
@@ -71,8 +73,8 @@ public class BoardGenerator {
             if (valid && generate(curIndex + 1)) return true;
 
             //If fails, then erase changes and start over
-            for (int i = 0; i < X; i++) {
-                for (int j = 0; j < Y; j++) {
+            for (int i = 0; i < boardWidth; i++) {
+                for (int j = 0; j < boardHeight; j++) {
                     if (updated[i][j])
                         board[i][j] = '\0';
                 }

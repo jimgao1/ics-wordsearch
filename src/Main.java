@@ -3,9 +3,6 @@ import java.awt.*;
 
 public class Main extends JFrame {
 
-    //Frames
-    GeneratePanel generatePanel;
-
     public Main() {
         this.setSize(600, 300);
         this.setTitle("WordSearch Generator & Solver");
@@ -14,9 +11,7 @@ public class Main extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setVisible(true);
 
-        generatePanel = new GeneratePanel();
-        this.add(generatePanel);
-
+        this.add(new GeneratePanel());
         this.add(new SolverPanel());
 
         this.repaint();
