@@ -8,7 +8,7 @@ public class Main extends JFrame {
 
     public Main() {
         this.setSize(600, 300);
-        this.setTitle("Fuck");
+        this.setTitle("WordSearch Generator & Solver");
         this.setLayout(new GridLayout(1, 2));
         this.setResizable(true);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
