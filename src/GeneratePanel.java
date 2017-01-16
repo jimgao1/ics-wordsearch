@@ -81,9 +81,9 @@ public class GeneratePanel extends JPanel implements ActionListener {
         pnlOptions.setLayout(new FlowLayout());
         lblRows = new JLabel("Rows: ");
         lblColumns = new JLabel("Cols: ");
-        txtRows = new JTextField();
+        txtRows = new JTextField("15");
         txtRows.setPreferredSize(new Dimension(40, 25));
-        txtColumns = new JTextField();
+        txtColumns = new JTextField("15");
         txtColumns.setPreferredSize(new Dimension(40, 25));
         pnlOptions.add(lblRows);
         pnlOptions.add(txtRows);
@@ -103,12 +103,30 @@ public class GeneratePanel extends JPanel implements ActionListener {
             //Get the word list path and update label
             this.fileChooser.showOpenDialog(this);
             this.wordListFile = fileChooser.getSelectedFile();
+            if (this.wordListFile == null) return;
             this.lblWordListPath.setText(this.wordListFile.getAbsolutePath().toString());
         } else if (e.getActionCommand().equals("choose_result")) {
             this.fileChooser.showOpenDialog(this);
             this.resultFile = fileChooser.getSelectedFile();
+            if (this.resultFile == null) return;
             this.lblResultsPath.setText(this.resultFile.getAbsolutePath().toString());
         } else if (e.getActionCommand().equals("generate")) {
+            //Generate the board
+            int rows = 0, cols = 0;
+
+            try {
+                rows = Integer.parseInt(txtRows.getText());
+                cols = Integer.parseInt(txtColumns.getText());
+            } catch (NumberFormatException ex){
+                JOptionPane.showMessageDialog(this, "Grid dimension values are invalid");
+                return;
+            }
+
+            if (this.wordListFile == null || this.resultFile == null){
+                JOptionPane.showMessageDialog(this, "You must specify the files.");
+                return;
+            }
+
             //Read the words from the file
             ArrayList<String> words = new ArrayList<>();
             try {
@@ -123,10 +141,11 @@ public class GeneratePanel extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Failed reading from file: " + ex.getLocalizedMessage());
             }
 
-            //Generate the board
-            int rows = Integer.parseInt(txtRows.getText());
-            int cols = Integer.parseInt(txtColumns.getText());
             char[][] board = BoardGenerator.generate(words, rows, cols);
+            if (board == null){
+                JOptionPane.showMessageDialog(this, "One of more words cannot be fitted onto the board");
+                return;
+            }
 
             new BoardViewWindow(words, board);
 

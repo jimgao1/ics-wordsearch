@@ -4,10 +4,10 @@ import java.awt.*;
 public class Main extends JFrame {
 
     public Main() {
-        this.setSize(600, 300);
+        this.setSize(600, 320);
         this.setTitle("WordSearch Generator & Solver");
         this.setLayout(new GridLayout(1, 2));
-        this.setResizable(true);
+        this.setResizable(false);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setVisible(true);
 

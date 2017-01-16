@@ -28,7 +28,7 @@ public class SolverPanel extends JPanel implements ActionListener {
 
     public JFileChooser fileChooser;
     public File boardFile;
-    public File wordlistFile;
+    public File wordListFile;
     public File outputFile;
 
     public SolverPanel() {
@@ -94,16 +94,23 @@ public class SolverPanel extends JPanel implements ActionListener {
         if (e.getActionCommand().equals("choose_board")) {
             this.fileChooser.showOpenDialog(this);
             this.boardFile = fileChooser.getSelectedFile();
+            if (this.boardFile == null) return;
             this.lblBoardFilePath.setText(this.boardFile.getAbsolutePath().toString());
         } else if (e.getActionCommand().equals("choose_wordlist")) {
             this.fileChooser.showOpenDialog(this);
-            this.wordlistFile = fileChooser.getSelectedFile();
-            this.lblWordListFile.setText(this.wordlistFile.getAbsolutePath().toString());
+            this.wordListFile = fileChooser.getSelectedFile();
+            if (this.wordListFile == null) return;
+            this.lblWordListFile.setText(this.wordListFile.getAbsolutePath().toString());
         }  else if (e.getActionCommand().equals("choose_result")) {
             this.fileChooser.showOpenDialog(this);
             this.outputFile = fileChooser.getSelectedFile();
+            if (this.outputFile == null) return;
             this.lblOutputPath.setText(this.outputFile.getAbsolutePath().toString());
         } else if (e.getActionCommand().equals("solve")) {
+            if (this.boardFile == null || this.wordListFile == null || this.outputFile == null){
+                JOptionPane.showMessageDialog(this, "You must specify the files.");
+                return;
+            }
 
             try {
                 //Read the board content
@@ -124,77 +131,22 @@ public class SolverPanel extends JPanel implements ActionListener {
                 System.out.println("Finished reading board");
 
                 //Read the wordlist content
-                Scanner wordlistReader = new Scanner(this.wordlistFile);
-                ArrayList<String> wordlist = new ArrayList<>();
+                Scanner wordListReader = new Scanner(this.wordListFile);
+                ArrayList<String> wordList = new ArrayList<>();
 
-                while(wordlistReader.hasNext()){
-                    wordlist.add(wordlistReader.next().toUpperCase());
+                while(wordListReader.hasNext()){
+                    wordList.add(wordListReader.next().toUpperCase());
                 }
 
                 System.out.println("Finished word list");
 
                 //Solve for the board
-                BoardSolver.SolverResult[] results = BoardSolver.findWord(board, wordlist);
-                int[][] highlight = new int[board.length][board[0].length];
+                BoardSolver.SolverResult[] results = BoardSolver.findWord(board, wordList);
+                BoardSolver.writeHTML(board, results, wordList, this.outputFile);
 
-                for (int i = 0; i < wordlist.size(); i++){
-                    highlight[results[i].locationX][results[i].locationY] = 1;
-                    for (int j = 1; j < wordlist.get(i).length(); j++){
-                        int nx = results[i].locationX + j * BoardSolver.dx[results[i].direction];
-                        int ny = results[i].locationY + j * BoardSolver.dy[results[i].direction];
-
-                        if (highlight[nx][ny] == 0) highlight[nx][ny] = 2;
-                    }
-                }
-
-                //Write the result to HTML
-                PrintWriter resultWriter = new PrintWriter(new FileWriter(this.outputFile));
-
-                resultWriter.println("<html>");
-                resultWriter.println("<link rel=\"stylesheet\" href=\"https://arch.jimgao.tk/wordsearch/style.css\">");
-                resultWriter.println("<table width='100%' border='1px'><tr>");
-                //Write the board data
-                resultWriter.println("<td width='60%'>");
-
-                resultWriter.println("<table class='board'>");
-                for (int i = 0; i < board.length; i++){
-                    resultWriter.println("<tr>");
-                    for (int j = 0; j < board[0].length; j++){
-                        if (highlight[i][j] == 0){
-                            resultWriter.print("<td>");
-                        } else if (highlight[i][j] == 1){
-                            resultWriter.print("<td class='firstletter'>");
-                        } else {
-                            resultWriter.print("<td class='letter'>");
-                        }
-
-                        resultWriter.print(board[i][j]);
-                        resultWriter.println("</td>");
-                    }
-
-                    resultWriter.println("</tr>");
-                }
-                resultWriter.println("</table>");
-
-                resultWriter.println("</td>");
-                //Write the word list
-                resultWriter.println("<td width='40%' >");
-                resultWriter.println("<h2>Word List</h2>");
-                resultWriter.println("<ul>");
-                for (String word : wordlist){
-                    resultWriter.printf("<li>%s</li>\r\n", word);
-                }
-                resultWriter.println("</ul>");
-                resultWriter.println("</td>");
-                resultWriter.println("</tr>");
-
-                resultWriter.println("</html>");
-                resultWriter.flush();
-                resultWriter.close();
-
-                JOptionPane.showMessageDialog(null, "This shit has been written to file");
+                JOptionPane.showMessageDialog(this, "The solution has been written to the file");
             } catch (Throwable t){
-
+                JOptionPane.showMessageDialog(this, "Error writing file: " + t.getLocalizedMessage());
             }
         }
     }

@@ -28,8 +28,6 @@ public class BoardGenerator {
     }
 
     private static boolean generate(int curIndex) {
-        System.out.printf("curIndex = %d\n", curIndex);
-
         if (curIndex == words.size()) {
             for (int i = 0; i < boardWidth; i++) {
                 for (int j = 0; j < boardHeight; j++) {
@@ -41,11 +39,25 @@ public class BoardGenerator {
             return true;
         }
 
-        for (; ; ) {
+        boolean[][] positionsTested = new boolean[boardWidth][boardHeight];
+        while(true){
             //Generate random shit
             int direction = (int) (Math.random() * 4) + (Math.random() > 0.4 ? 0 : 4);
             int locX = (int) (Math.random() * boardWidth);
             int locY = (int) (Math.random() * boardHeight);
+
+            boolean allTested = true;
+            for (int i = 0; i < boardWidth; i++){
+                for (int j = 0; j < boardHeight; j++){
+                    if (!positionsTested[i][j]){
+                        allTested = false;
+                    }
+                }
+            }
+
+            if (allTested) return false;
+            if (positionsTested[locX][locY]) continue;
+            positionsTested[locX][locY] = true;
 
             //Check out of bounds
             String curWord = words.get(curIndex);
