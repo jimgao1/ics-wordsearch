@@ -117,6 +117,11 @@ public class GeneratePanel extends JPanel implements ActionListener {
             try {
                 rows = Integer.parseInt(txtRows.getText());
                 cols = Integer.parseInt(txtColumns.getText());
+
+                if (rows < 10 || rows > 20 || cols < 10 || cols > 20){
+                    JOptionPane.showMessageDialog(this, "Grid dimensions must be within [10, 20]");
+                    return;
+                }
             } catch (NumberFormatException ex){
                 JOptionPane.showMessageDialog(this, "Grid dimension values are invalid");
                 return;

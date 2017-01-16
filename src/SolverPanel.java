@@ -113,6 +113,8 @@ public class SolverPanel extends JPanel implements ActionListener {
             }
 
             try {
+                long startingTime = System.currentTimeMillis();
+
                 //Read the board content
                 Scanner boardReader = new Scanner(this.boardFile);
                 ArrayList<String> lines = new ArrayList<>();
@@ -128,8 +130,6 @@ public class SolverPanel extends JPanel implements ActionListener {
                     }
                 }
 
-                System.out.println("Finished reading board");
-
                 //Read the wordlist content
                 Scanner wordListReader = new Scanner(this.wordListFile);
                 ArrayList<String> wordList = new ArrayList<>();
@@ -138,13 +138,12 @@ public class SolverPanel extends JPanel implements ActionListener {
                     wordList.add(wordListReader.next().toUpperCase());
                 }
 
-                System.out.println("Finished word list");
-
                 //Solve for the board
                 BoardSolver.SolverResult[] results = BoardSolver.findWord(board, wordList);
                 BoardSolver.writeHTML(board, results, wordList, this.outputFile);
 
-                JOptionPane.showMessageDialog(this, "The solution has been written to the file");
+                JOptionPane.showMessageDialog(this, String.format("The puzzle was solved in %d milliseconds.",
+                        (System.currentTimeMillis() - startingTime)));
             } catch (Throwable t){
                 JOptionPane.showMessageDialog(this, "Error writing file: " + t.getLocalizedMessage());
             }
