@@ -154,7 +154,6 @@ public class GeneratePanel extends JPanel implements ActionListener {
 
             new BoardViewWindow(words, board);
 
-            //Print the fucking thing
             try {
                 PrintWriter writer = new PrintWriter(new FileOutputStream(this.resultFile));
                 for (int i = 0; i < board.length; i++) {

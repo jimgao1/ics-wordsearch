@@ -8,24 +8,30 @@ import java.util.Scanner;
 
 public class SolverPanel extends JPanel implements ActionListener {
 
+    //Constraints for the main window to align the elements
     public GridBagConstraints constraints;
 
     public JLabel lblTitle;
 
+    //Components for board file selection
     public JPanel pnlBoardFile;
     public JLabel lblBoardFilePath;
     public JButton btnChangeBoardFilePath;
 
+    //Components for word list file selection
     public JPanel pnlWordListFile;
     public JLabel lblWordListFile;
     public JButton btnChangeWordListFilePath;
 
+    //Components for output file selection
     public JPanel pnlOutput;
     public JLabel lblOutputPath;
     public JButton btnChangeOutputPath;
 
-    public JButton btnGenerate;
+    //Button to generate the puzzle
+    public JButton btnSolve;
 
+    //Definition of file paths
     public JFileChooser fileChooser;
     public File boardFile;
     public File wordListFile;
@@ -34,6 +40,13 @@ public class SolverPanel extends JPanel implements ActionListener {
     public SolverPanel() {
         fileChooser = new JFileChooser();
 
+        /*
+            The constraint for the grid is initialized. The weight of each file selection boxes
+            are defined such that the screen is divided into 3 parts.
+
+            In addition, padding has been added to each of the cells to make it more visually
+            pleasing.
+         */
         constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.anchor = GridBagConstraints.PAGE_START;
@@ -46,6 +59,7 @@ public class SolverPanel extends JPanel implements ActionListener {
         this.setBorder(BorderFactory.createEtchedBorder());
         this.setAlignmentY(Component.TOP_ALIGNMENT);
 
+        //Add the title
         lblTitle = new JLabel("Solve Puzzle");
         lblTitle.setFont(new Font("Arial", Font.BOLD, 15));
         this.add(lblTitle, constraints);
@@ -83,12 +97,18 @@ public class SolverPanel extends JPanel implements ActionListener {
         pnlOutput.add(btnChangeOutputPath, BorderLayout.EAST);
         this.add(pnlOutput, constraints);
 
-        btnGenerate = new JButton("Solve Puzzle");
-        btnGenerate.setActionCommand("solve");
-        btnGenerate.addActionListener(this);
-        this.add(btnGenerate, constraints);
+        btnSolve = new JButton("Solve Puzzle");
+        btnSolve.setActionCommand("solve");
+        btnSolve.addActionListener(this);
+        this.add(btnSolve, constraints);
     }
 
+    /*
+        This method is responsible for handling the GUI events, including all the button clicks.
+
+        Each button has a action command, which will be read in the method below and the corresponding
+        action will take place.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("choose_board")) {
@@ -113,16 +133,19 @@ public class SolverPanel extends JPanel implements ActionListener {
             }
 
             try {
+                //Record the starting time for benchmarking
                 long startingTime = System.currentTimeMillis();
 
                 //Read the board content
                 Scanner boardReader = new Scanner(this.boardFile);
                 ArrayList<String> lines = new ArrayList<>();
 
+                //Read all the lines in the file to obtain the number of rows
                 while(boardReader.hasNext()){
                     lines.add(boardReader.nextLine());
                 }
 
+                //Creates the 2-dimensional array containing the actual board
                 char[][] board = new char[lines.size()][lines.get(0).length()];
                 for (int i = 0; i < lines.size(); i++){
                     for (int j = 0; j < lines.get(i).length(); j++){
@@ -134,18 +157,24 @@ public class SolverPanel extends JPanel implements ActionListener {
                 Scanner wordListReader = new Scanner(this.wordListFile);
                 ArrayList<String> wordList = new ArrayList<>();
 
+                //Reads the content of the wordlist file and converts each
+                //word into uppercase for easy matching
                 while(wordListReader.hasNext()){
                     wordList.add(wordListReader.next().toUpperCase());
                 }
 
                 //Solve for the board
                 BoardSolver.SolverResult[] results = BoardSolver.findWord(board, wordList);
+
+                //Writes the HTML to the file
                 BoardSolver.writeHTML(board, results, wordList, this.outputFile);
 
+                //Finally, output the success message as well as the running time
                 JOptionPane.showMessageDialog(this, String.format("The puzzle was solved in %d milliseconds.",
                         (System.currentTimeMillis() - startingTime)));
-            } catch (Throwable t){
-                JOptionPane.showMessageDialog(this, "Error writing file: " + t.getLocalizedMessage());
+            } catch (Exception ex){
+                //If something fails, output a error message with the exception message
+                JOptionPane.showMessageDialog(this, "Error writing file: " + ex.getLocalizedMessage());
             }
         }
     }
