@@ -1,3 +1,11 @@
+/*
+    [BoardSolver.java]
+
+    Date: Jan 16th, 2016
+    Author: Jim Gao, Steven Ye, Tianqi Huang
+    Purpose: The class that provides utilities to solve board and output HTML containing the solution
+ */
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -60,25 +68,45 @@ public class BoardSolver {
         return results;
     }
 
+    /*
+        The method to find a single word in the grid
+
+        It returns a single SolverResult if the word is found, containing the location
+        as well as the direction where the word is found.
+
+        Otherwise, it returns null.
+     */
     private static SolverResult find(String str){
+        /*
+            i: the x-value of the current starting position
+            j: the y-value of the current starting position
+            k: the direction for the current iteration
+         */
+
         for (int i = 0; i < board.length; i++){
             for (int j = 0; j < board[0].length; j++){
                 for (int k = 0; k < dx.length; k++){
-
+                    //Check if the end of the word goes out of bounds
                     int nX = i + dx[k] * (str.length() - 1), nY = j + dy[k] * (str.length() - 1);
                     if (nX < 0 || nX >= board.length || nY < 0 || nY >= board[0].length) continue;
+
                     boolean flag = true;
                     for (int l = 0; l < str.length(); l++){
+                        //If the letter at the current position does not match
+                        //that of the word, then break
                         if (str.charAt(l) != board[i + l * dx[k]][j + l * dy[k]]){
                             flag = false;
                             break;
                         }
                     }
 
+                    //If the word is found successfully, then return the result
                     if (flag) return new SolverResult(i, j, k);
                 }
             }
         }
+
+        //If it is not found, then return null
         return null;
     }
 
@@ -198,6 +226,8 @@ public class BoardSolver {
         resultWriter.println("</tr>");
 
         resultWriter.println("</html>");
+
+        //Close and finish writing the file
         resultWriter.flush();
         resultWriter.close();
     }

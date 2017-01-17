@@ -1,3 +1,11 @@
+/*
+    [SolverPanel.java]
+
+    Date: Jan 16th, 2016
+    Author: Jim Gao, Steven Ye, Tianqi Huang
+    Purpose: The GUI panel that handles solving boards
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -39,7 +47,6 @@ public class SolverPanel extends JPanel implements ActionListener {
 
     public SolverPanel() {
         fileChooser = new JFileChooser();
-
         /*
             The constraint for the grid is initialized. The weight of each file selection boxes
             are defined such that the screen is divided into 3 parts.
@@ -64,6 +71,7 @@ public class SolverPanel extends JPanel implements ActionListener {
         lblTitle.setFont(new Font("Arial", Font.BOLD, 15));
         this.add(lblTitle, constraints);
 
+        //Add the board file selection
         pnlBoardFile = new JPanel();
         pnlBoardFile.setBorder(BorderFactory.createTitledBorder("Board File"));
         pnlBoardFile.setLayout(new BorderLayout());
@@ -75,6 +83,7 @@ public class SolverPanel extends JPanel implements ActionListener {
         pnlBoardFile.add(btnChangeBoardFilePath, BorderLayout.EAST);
         this.add(pnlBoardFile, constraints);
 
+        //Add the word list file selection
         pnlWordListFile = new JPanel();
         pnlWordListFile.setBorder(BorderFactory.createTitledBorder("Word List File"));
         pnlWordListFile.setLayout(new BorderLayout());
@@ -86,6 +95,7 @@ public class SolverPanel extends JPanel implements ActionListener {
         pnlWordListFile.add(btnChangeWordListFilePath, BorderLayout.EAST);
         this.add(pnlWordListFile, constraints);
 
+        //Add the output file selection
         pnlOutput = new JPanel();
         pnlOutput.setBorder(BorderFactory.createTitledBorder("Output File"));
         pnlOutput.setLayout(new BorderLayout());
@@ -97,6 +107,7 @@ public class SolverPanel extends JPanel implements ActionListener {
         pnlOutput.add(btnChangeOutputPath, BorderLayout.EAST);
         this.add(pnlOutput, constraints);
 
+        //Add the solve button
         btnSolve = new JButton("Solve Puzzle");
         btnSolve.setActionCommand("solve");
         btnSolve.addActionListener(this);

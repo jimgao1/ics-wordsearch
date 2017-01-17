@@ -1,3 +1,11 @@
+/*
+    [BoardViewWindow.java]
+
+    Date: Jan 16th, 2016
+    Author: Jim Gao, Steven Ye, Tianqi Huang
+    Purpose: The GUI component that displays the word list and the board
+ */
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;

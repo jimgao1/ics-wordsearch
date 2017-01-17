@@ -1,3 +1,11 @@
+/*
+    [Main.java]
+
+    Date: Jan 16th, 2016
+    Author: Jim Gao, Steven Ye, Tianqi Huang
+    Purpose: The entry point of the word search generator and solver
+ */
+
 import javax.swing.*;
 import java.awt.*;
 

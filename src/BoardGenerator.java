@@ -1,3 +1,11 @@
+/*
+    [BoardGenerator.java]
+
+    Date: Jan 16th, 2016
+    Author: Jim Gao, Steven Ye, Tianqi Huang
+    Purpose: The class that provides utilities to generate new boards
+ */
+
 import java.util.ArrayList;
 
 public class BoardGenerator {
@@ -61,18 +69,10 @@ public class BoardGenerator {
         /*
             Terminating condition: when all the words have been generated successfully.
 
-            The board is iterated through, and all the grids containing null ('\0') is
-            replaced with a random letter.
+            The empty spaces are not filled yet, but they are instead filled before the
+            board is written to the file
          */
         if (curIndex == words.size()) {
-            for (int i = 0; i < boardWidth; i++) {
-                for (int j = 0; j < boardHeight; j++) {
-                    //If the current cell has not been assigned, then place a random letter
-                    if (board[i][j] == '\0') {
-                        board[i][j] = (char) ('A' + (int) (Math.random() * 26));
-                    }
-                }
-            }
             return true;
         }
 
